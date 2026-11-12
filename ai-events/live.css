@@ -1,0 +1,90 @@
+.live-main { --wall-gap: 2px; }
+.live-title { margin-bottom: 16px; flex-wrap: wrap; }
+.live-title .page-actions { margin-left: auto; }
+.live-stage { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; }
+.live-wall { background: #10161e; }
+.live-grid {
+  --columns: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+  gap: var(--wall-gap);
+  padding: var(--wall-gap);
+  background: #10161e;
+}
+.live-grid[data-split="1"] { --columns: 1; }
+.live-grid[data-split="6"], .live-grid[data-split="9"] { --columns: 3; }
+.live-grid[data-split="16"] { --columns: 4; column-gap: 0; }
+.live-tile {
+  min-width: 0;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #151e29;
+  color: #eef3f9;
+}
+@media (min-width: 761px) and (min-height: 600px) {
+  /* Fit the whole square grid to the viewport, then let each tile keep its ratio. */
+  .live-grid:is([data-split="4"], [data-split="9"], [data-split="16"]) {
+    max-width: calc((100dvh - 230px) * 16 / 9);
+    margin-inline: auto;
+  }
+  .live-grid[data-split="6"] .live-tile { max-height: calc((100dvh - 230px) / 2); }
+}
+.live-tile.is-selected::after { content: ''; position: absolute; inset: 0; border: 1px solid #8aa8cfb3; pointer-events: none; }
+.live-tile video { display: block; width: 100%; height: 100%; object-fit: contain; background: #0b1017; }
+.live-tile-head { position: absolute; inset: 0 0 auto; display: flex; gap: 6px; justify-content: space-between; padding: 9px; align-items: start; pointer-events: none; }
+.live-tile-name, .live-tile button { border: 1px solid #ffffff28; background: #101720e8; color: #f4f7fb; border-radius: 6px; }
+.live-tile-name { padding: 3px 7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.live-tile-actions { display: flex; gap: 4px; pointer-events: auto; }
+.live-tile button { padding: 3px 6px; font-size: 12px; font-weight: 500; }
+.live-tile button:hover { background: #2c3a4a; }
+.live-tile .live-empty { position: absolute; inset: 0; width: 100%; border: 0; background: transparent; color: #bac9da; }
+.live-tile .live-empty:hover { background: #1d2a39; }
+.live-empty span { display: block; font-size: 22px; margin-bottom: 4px; }
+.live-tile-state { position: absolute; inset: 38% 8px auto; color: #d9e3ef; text-align: center; pointer-events: none; }
+.live-toolbar, .live-tools, .live-presets, .live-splits { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.live-toolbar { padding: 10px; gap: 12px; }
+.live-toolbar button, .live-toolbar select { min-height: 34px; padding: 5px 8px; font-size: 12px; }
+.live-splits { margin-left: auto; }
+.live-splits button { min-width: 34px; font-variant-numeric: tabular-nums; }
+.live-toolbar button[aria-pressed="true"] { border-color: var(--blue); color: var(--blue); }
+.live-splits span, .live-presets label, .live-message { color: var(--muted); font-size: 12px; }
+.live-message { min-height: 18px; margin-top: 8px; }
+.live-toolbar select, .live-search input { border: 1px solid var(--line); border-radius: 6px; background: var(--theme-control); color: inherit; font-family: inherit; }
+.live-search input:focus-visible, .live-toolbar select:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+#livePicker, #liveSaveDialog { width: min(440px, 94vw); padding: 20px; }
+.live-dialog-head, .live-dialog-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.live-dialog-actions { justify-content: end; margin-top: 16px; }
+.live-search { display: grid; gap: 6px; margin: 12px 0; color: var(--muted); }
+.live-search input { padding: 8px 10px; }
+.live-options { display: grid; gap: 5px; max-height: 45vh; overflow: auto; }
+.live-options button { display: flex; gap: 8px; justify-content: space-between; align-items: baseline; text-align: left; }
+.live-options button small { color: var(--muted); white-space: nowrap; }
+.live-main:fullscreen { margin: 0; padding: 16px; overflow: auto; background: var(--theme-control); }
+@media (max-width: 1000px) { .live-tile-head { padding: 5px; } .live-splits { margin-left: 0; } }
+@media (max-width: 760px) {
+  .live-grid[data-split="16"] { --columns: 2; }
+  .live-title { gap: 8px; }
+  .live-tile-actions button { padding: 2px 4px; }
+}
+
+/* 1 路：左侧主画面 + 右侧竖列预览 */
+.live-single { display: grid; grid-template-columns: minmax(0, 1fr) clamp(150px, 18vw, 240px); gap: 6px; padding: 6px; background: #10161e; }
+.live-single-main { position: relative; min-width: 0; aspect-ratio: 16 / 9; background: #151e29; overflow: hidden; }
+.live-single-main > .live-tile { position: absolute; inset: 0; aspect-ratio: auto; height: 100%; }
+.live-single-rail { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; min-height: 0; scrollbar-width: thin; }
+.live-thumb { flex: 0 0 auto; aspect-ratio: 16 / 9; min-height: 0; border: 1px solid #ffffff1f; border-radius: 6px; cursor: pointer; background: #151e29; }
+.live-thumb:hover, .live-thumb:focus-visible { border-color: #8aa8cf; outline: none; }
+.live-thumb-empty { display: grid; place-items: center; border-style: dashed; background: #0d141c; color: #9fb2c6; font-size: 12px; font-weight: 500; padding: 0; }
+.live-thumb-empty:hover, .live-thumb-empty:focus-visible { border-color: #8aa8cf; color: #e7f0fa; }
+.live-thumb .live-tile-head { padding: 4px; }
+.live-thumb .live-tile-actions { display: none; }
+.live-thumb .live-tile-name { font-size: 10px; padding: 2px 5px; }
+.live-thumb .live-tile-state { inset: auto 6px 18px; font-size: 10px; }
+.live-thumb video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 760px) {
+  .live-single { grid-template-columns: minmax(0, 1fr); }
+  .live-single-rail { flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+  .live-thumb { flex: 0 0 38%; }
+}
+@media (max-width: 460px) { .live-grid[data-split="6"] { --columns: 2; } }

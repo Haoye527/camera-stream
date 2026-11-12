@@ -1,0 +1,24 @@
+{
+  "relays": [
+    {
+      "key": "front",
+      "type": "tianyi",
+      "port": 18765,
+      "hls_dir": "hls"
+    },
+    {
+      "key": "side",
+      "type": "tianyi",
+      "port": 18766,
+      "hls_dir": "side-hls"
+    },
+    {
+      "key": "yi",
+      "type": "yi",
+      "port": 18767,
+      "work_dir": "local-camera-hub",
+      "config": "local-camera-hub/camera-private.json",
+      "quality": 1
+    }
+  ]
+}

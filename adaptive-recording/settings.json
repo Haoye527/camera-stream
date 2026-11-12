@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "idle_fps": 2,
+  "analysis_fps": 5,
+  "motion_pixel_difference": 12,
+  "motion_area_ratio": 0.004,
+  "pre_seconds": 3,
+  "post_seconds": 10,
+  "settle_seconds": 90,
+  "crf": 25,
+  "maxrate_kbps": 3000,
+  "preset": "veryfast"
+}

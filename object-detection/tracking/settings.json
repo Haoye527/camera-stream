@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "high_threshold": 0.5,
+  "low_threshold": 0.2,
+  "confirmation_frames": 2,
+  "lost_seconds": 5,
+  "idle_fps": 1,
+  "active_fps": 2,
+  "roi_enabled": true,
+  "roi_interval_seconds": 1,
+  "idle_roi_interval_seconds": 2,
+  "event_grace_seconds": 5
+}

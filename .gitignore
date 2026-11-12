@@ -1,0 +1,45 @@
+# 运行时数据
+hls/
+side-hls/
+**/live-hls/
+ai-events/cache/
+cloud-backup/
+daily-analysis/data/
+adaptive-recording/last-original/
+adaptive-recording/work/
+**/process.json
+**/status.json
+**/*.log
+**/*.db
+**/*.db-wal
+**/*.db-shm
+preview-state.db
+relay-manager-status.json
+*-managed-process.json
+
+# 私有配置与凭据
+*private*
+*-live.m3u
+*-renew.json
+tianyi-private-*.json
+local-camera-hub/camera-private.json
+**/*.private.json
+
+# 媒体、截图与证据
+*.mp4
+*.h264
+*.ts
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# 依赖、模型与第三方资源
+**/.venv/
+**/__pycache__/
+python32/
+yi-python-proxy/
+object-detection/models/
+object-detection/frontend/
+backups/
+analysis.cany/

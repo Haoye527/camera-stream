@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>直播 · EasyNVR</title>
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/live.css">
+  <script src="/hls.light.min.js" defer></script>
+  <script src="/app.js" defer></script>
+  <script src="/live.js" defer></script>
+</head>
+<body>
+  <aside class="rail">
+    <a class="brand" href="/" aria-label="EasyNVR 事件预览首页">
+      <svg viewBox="0 0 32 32" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="20" height="18" rx="5"/><path d="m23 13 6-3v12l-6-3M9 16h8M13 12v8"/></svg>
+      <span>EasyNVR<small>视频调阅</small></span>
+    </a>
+    <nav aria-label="主导航"><a href="/live" class="active" aria-current="page">直播</a><a href="/">事件预览</a><a href="/#replay">录像回放</a><a href="/daily">每日分析</a></nav>
+    <div class="rail-console" aria-label="录像控制台">
+  <section class="console-panel adaptive-panel" aria-label="智能录像">
+    <div class="adaptive-heading"><label for="adaptiveToggle">智能录像</label><input id="adaptiveToggle" type="checkbox" role="switch" aria-describedby="adaptiveHint adaptiveState" disabled></div>
+    <span id="adaptiveHint" class="console-sr-only">静止约 2 帧/秒，活动保留原帧率。关闭后停止优化新录像。</span>
+    <div class="adaptive-metric"><strong id="adaptiveCount">—</strong><span>段已优化</span></div>
+    <div class="console-meta"><span id="adaptiveState" role="status">读取中</span><span id="adaptiveSaved">—</span></div>
+  </section>
+  <section id="storagePanel" class="console-panel storage-panel" aria-label="录像磁盘空间">
+    <div class="console-heading"><strong id="diskLabel">录像硬盘</strong><strong id="diskSummary">读取中</strong></div>
+    <meter id="diskMeter" min="0" max="1" value="0" aria-label="硬盘已用空间"></meter>
+    <div class="console-meta"><span id="diskDetail">—</span><span id="diskPercent">—</span></div>
+  </section>
+
+  <section class="console-panel global-cleanup-panel" aria-label="数据管理">
+    <div class="global-cleanup-heading"><strong>数据管理</strong></div>
+    <button id="cleanupAll" class="global-cleanup destructive" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v5m4-5v5"/></svg><span>全部清空<small>录像、事件与图片</small></span></button>
+    <button id="cleanupAllVideos" class="global-cleanup" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="14" height="12" rx="2"/><path d="m17 10 4-3v10l-4-3M8 9l4 3-4 3Z"/></svg><span>清空全部录像<small>保留事件与快照</small></span></button>
+    <button id="clearPreviewCache" class="global-cleanup" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 9-9 4 4-9 9H3v-4Zm9-9 4-4 4 4-4 4m-9 1 4 4"/></svg><span>清理缓存<small>预览图与临时视频</small></span></button>
+  </section>
+</div>
+  </aside>
+  <main class="live-main" id="livePage">
+    <div class="title-row live-title">
+      <div><h1>实时画面</h1><p id="liveSummary" role="status">正在读取摄像头…</p></div>
+      <div class="page-actions">
+        <button id="liveRefresh" type="button">刷新</button>
+        <button id="liveFullscreen" type="button">全屏</button>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换到深色主题">
+          <span class="theme-to-dark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.9 13.4A9 9 0 0 1 10.6 3.1a9 9 0 1 0 10.3 10.3Z"/></svg>深色</span>
+          <span class="theme-to-light"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4m0-14.2-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>浅色</span>
+        </button>
+      </div>
+    </div>
+    <p id="storageNotice" class="storage-notice" role="status" hidden></p>
+    <section class="live-stage" aria-label="摄像头视频墙">
+      <div class="live-wall"><div id="liveGrid" class="live-grid" data-split="4" aria-label="直播画面"></div></div>
+      <div class="live-toolbar">
+        <div class="live-tools" aria-label="直播操作">
+          <button id="liveCruise" type="button" aria-pressed="false">轮巡</button>
+          <button id="liveSnapshot" type="button">抓图</button>
+          <button id="liveCamera" type="button">摄像头</button>
+          <button id="liveClear" type="button">清屏</button>
+          <button id="liveUndo" type="button" hidden>撤销清屏</button>
+        </div>
+        <div class="live-presets" aria-label="布局预设">
+          <label for="livePreset">预设</label><select id="livePreset"><option value="">选择预设</option></select>
+          <button id="liveSave" type="button">保存当前</button><button id="liveDelete" type="button" disabled>删除预设</button>
+        </div>
+        <div class="live-splits" role="group" aria-label="分屏布局">
+          <span>布局</span>
+          <button type="button" data-split="1" aria-label="单分屏">1</button>
+          <button type="button" data-split="4" aria-label="四分屏">4</button>
+          <button type="button" data-split="6" aria-label="六分屏">6</button>
+          <button type="button" data-split="9" aria-label="九分屏">9</button>
+          <button type="button" data-split="16" aria-label="十六分屏">16</button>
+        </div>
+      </div>
+    </section>
+    <p class="live-message" id="liveMessage" role="status"></p>
+    <dialog id="livePicker" aria-labelledby="livePickerTitle">
+      <div class="live-dialog-head"><h2 id="livePickerTitle">选择摄像头</h2><form method="dialog"><button type="submit">关闭</button></form></div>
+      <label class="live-search">搜索通道<input id="liveSearch" type="search" placeholder="输入摄像头名称" autocomplete="off"></label>
+      <div id="liveOptions" class="live-options"></div>
+    </dialog>
+    <dialog id="liveSaveDialog" aria-labelledby="liveSaveTitle">
+      <form id="liveSaveForm">
+        <h2 id="liveSaveTitle">保存当前布局</h2>
+        <label class="live-search">预设名称<input id="livePresetName" maxlength="30" required></label>
+        <div class="live-dialog-actions"><button type="submit" value="cancel" formmethod="dialog" formnovalidate>取消</button><button type="submit">保存</button></div>
+      </form>
+    </dialog>
+  </main>
+  <dialog id="cleanupDialog" class="cleanup-dialog" aria-labelledby="cleanupTitle"><div class="cleanup-body"><h2 id="cleanupTitle">清空本路录像及事件</h2><p id="cleanupScope" class="cleanup-scope"></p><p id="cleanupTargets" class="cleanup-targets"></p><p id="cleanupMessage" role="status"></p><label for="cleanupName">输入摄像头名称确认：<strong id="cleanupExpected"></strong></label><input id="cleanupName" autocomplete="off" spellcheck="false"><div class="cleanup-actions"><button id="cancelCleanup" type="button">取消</button><button id="confirmCleanup" class="danger-button" type="button" disabled>确认清空</button></div></div></dialog>
+</body>
+</html>
