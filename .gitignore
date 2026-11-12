@@ -43,3 +43,8 @@ object-detection/models/
 object-detection/frontend/
 backups/
 analysis.cany/
+
+# README 截图
+!docs/images/
+!docs/images/*.jpg
+!docs/images/*.png

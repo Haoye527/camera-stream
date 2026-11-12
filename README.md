@@ -1,5 +1,10 @@
 # camera-stream
 
+<p align="center">
+  <img src="docs/images/replay.jpg" alt="多路录像回放：两路同步、事件时间轴、右侧告警" width="49%">
+  <img src="docs/images/live.jpg" alt="实时画面：左侧主画面 + 右侧竖列预览" width="49%">
+</p>
+
 面向 EasyNVR 的本机摄像头监控增强套件：事件预览、多路录像回放、直播视频墙、YOLO 目标检测、智能录像压缩、按磁盘水位覆盖和 DeepSeek 日报。
 
 > 本项目是围绕本人自建监控环境的实践代码，依赖 EasyNVR 7.7.421、天翼看家 / 云蚁看家客户端等第三方软件。仓库不含这些商业软件及其前端资源，也不含任何设备口令、登录信息或带签名的播放地址。
